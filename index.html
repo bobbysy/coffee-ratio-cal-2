@@ -385,44 +385,49 @@
         }
 
         // Calculate 4:6 method pours
-        const sweetnessPortion = Math.round(totalWater * 0.4); // 40% for sweetness
+        const sweetnessPortion = parseFloat(totalWater * 0.4); // 40% for sweetness
         const strengthPortion = totalWater - sweetnessPortion; // 60% for strength
 
         // First two pours (sweetness control) - divide 40% equally
-        const pour1 = Math.round(sweetnessPortion / 2);
+        const pour1 = sweetnessPortion / 2;
         const pour2 = sweetnessPortion - pour1; // Ensure exact total
 
         // Last three pours (strength control) - divide 60% equally
-        const strengthPerPour = Math.round(strengthPortion / 3);
+        const strengthPerPour = strengthPortion / 3;
         const pour3 = strengthPerPour;
         const pour4 = strengthPerPour;
         const pour5 = strengthPortion - (pour3 + pour4); // Ensure exact total
 
         // Generate timing and cumulative weights
         const pours = [
-          { time: "0:00", amount: pour1, cumulative: pour1, type: "sweetness" },
+          {
+            time: "0:00",
+            amount: (pour1).toFixed(2),
+            cumulative: coffeeWeight + pour1,
+            type: "sweetness",
+          },
           {
             time: "0:45",
-            amount: pour2,
-            cumulative: pour1 + pour2,
+            amount: (pour2).toFixed(2),
+            cumulative: coffeeWeight + pour1 + pour2,
             type: "sweetness",
           },
           {
             time: "1:30",
-            amount: pour3,
-            cumulative: pour1 + pour2 + pour3,
+            amount: (pour3).toFixed(2),
+            cumulative: coffeeWeight + pour1 + pour2 + pour3,
             type: "strength",
           },
           {
             time: "2:15",
-            amount: pour4,
-            cumulative: pour1 + pour2 + pour3 + pour4,
+            amount: (pour4).toFixed(2),
+            cumulative: coffeeWeight + pour1 + pour2 + pour3 + pour4,
             type: "strength",
           },
           {
             time: "3:00",
-            amount: pour5,
-            cumulative: totalWater,
+            amount: (pour5).toFixed(2),
+            cumulative: coffeeWeight + totalWater,
             type: "strength",
           },
         ];
@@ -493,7 +498,7 @@
         const waterInput = document.getElementById("water");
 
         if (coffeeWeight && !waterInput.value) {
-          const suggestedWater = Math.round(coffeeWeight * 15); // 1:15 ratio
+          const suggestedWater = parseFloat(coffeeWeight * 15).toFixed(2); // 1:15 ratio
           waterInput.placeholder = `Suggested: ${suggestedWater}g (1:15 ratio)`;
         }
       });
